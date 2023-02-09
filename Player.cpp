@@ -65,18 +65,26 @@ void Player::Update()
     if (transform_.position_.x < nextX)
     {
         transform_.position_.x += 0.1f;
+        if (transform_.position_.x >= nextX)
+            transform_.position_.x = nextX;
     }
     else if (transform_.position_.x > nextX)
     {
         transform_.position_.x -= 0.1f;
+        if(transform_.position_.x < nextX)
+            transform_.position_.x = nextX;
     }
     if (transform_.position_.z < nextY)
     {
         transform_.position_.z += 0.1f;
+        if (transform_.position_.z > nextY)
+            transform_.position_.z = nextY;
     }
-    else if (transform_.position_.z > nextY)
+    else if (transform_.position_.z >= nextY)
     {
         transform_.position_.z -= 0.1f;
+        if (transform_.position_.z < nextY)
+            transform_.position_.z = nextY;
     }
 
     transform_.position_.x;
