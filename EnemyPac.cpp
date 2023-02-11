@@ -27,9 +27,9 @@ void EnemyPac::Initialize()
     
 
     //モデルデータのロード
-    hModel_ = Model::Load("Enemy.fbx");
+    hModel_ = Model::Load("Player.fbx");
     assert(hModel_ >= 0);
-    transform_.position_ = XMFLOAT3(pStage->GetX() + -3.5, 0, (pStage->GetY() + 0.5));
+    //transform_.position_ = XMFLOAT3(pStage->GetX() + -3.5, 0, (pStage->GetY() + 0.5));
     transform_.position_ = XMFLOAT3(13.5, 0, 8.5);
 
     playerPos = pPlayer->GetPosition();

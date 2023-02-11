@@ -57,12 +57,20 @@ void Stage::Initialize()
         }
     }
 
-    goalCell = { goalCellY, goalCellX };			//ゴール地点
-   /* Init(startCell[RED]);
+    //for (int i = 0; i < 3; i++)
+    //goalCell = { goalCellY, goalCellX };?			//ゴール地点
+   
+                                                        
+                                                        
+    /* Init(startCell[RED]);
     CalcCosts(startCell[RED]);
     Show();*/
 
-    map_[goalCellY][goalCellX] = 2;
+    //for (int i = 0; i < 3; i++)
+    {
+        map_[goalCellY[0]][goalCellX[0]] = 2;
+    }
+    
 
 
     
@@ -73,8 +81,11 @@ void Stage::Update()
 {
     Player* pPlayer = (Player*)FindObject("Player");
     EnemyPac* pEnemyPac = (EnemyPac*)FindObject("EnemyPac");
+
     MapStart.first = (int)pPlayer->GetPosition().z;
     MapStart.second = (int)pPlayer->GetPosition().x;
+
+
     MapGoal.first = (int)pEnemyPac->GetPosition().z;
     MapGoal.second = (int)pEnemyPac->GetPosition().x;
 
@@ -88,7 +99,7 @@ void Stage::Update()
         flag = false;
         if (minCost.size() != 0)
         {
-            min = (minCost.back());
+            min[0] = (minCost.back());
             minCost.pop_back();
         }
         
@@ -97,10 +108,10 @@ void Stage::Update()
 
     if(minCost.size() != 0)
     {
-        if (min.first  == (int)pPlayer->GetPosition().z && min.second == (int)pPlayer->GetPosition().x)
+        if (min[0].first  == (int)pPlayer->GetPosition().z && min[0].second == (int)pPlayer->GetPosition().x)
         {
             //std::make_pair(minCost.pop_front());
-            min = (minCost.back());
+            min[0] = (minCost.back());
             minCost.pop_back();
 
             //min.first;
@@ -263,15 +274,15 @@ void Stage::Show()
 
 }
 
-int Stage::GetX()
+int Stage::GetX(int ID)
 {
-    return goalCellX;
+    return goalCellX[ID];
 
 }
 
-int Stage::GetY()
+int Stage::GetY(int ID)
 {
-    return goalCellY;
+    return goalCellY[ID];
 }
 
 void Stage::SetStartCellX(int X, int num)
@@ -286,12 +297,12 @@ void Stage::SetStartCellY(int Y, int num)
 
 void Stage::SetGoalCellX(int X)
 {
-    goalCellX = X;
+    goalCellX[0] = X;
 }
 
 void Stage::SetGoalCellY(int Y)
 {
-    goalCellY = Y;
+    goalCellY[0] = Y;
 }
 
 std::pair<int, int> Stage::GetListPos()
@@ -399,7 +410,7 @@ void Stage::CalcCosts(CELL cell)
 }
 
 
-std::pair<int, int> Stage::GetNextMovePos()
+std::pair<int, int> Stage::GetNextMovePos(int ID)
 {
-    return min;
+    return min[0];
 }

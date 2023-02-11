@@ -6,13 +6,14 @@
 class Player : public GameObject
 {
     int hModel_;    //モデル番号
-    float nextX = 0;
-    float nextY = 0;
+    float nextX[3] = { 0,0,0 };
+    float nextY[3] = { 0,0,0 };
     
     bool start = false;
     Stage* pStage;
     
 public:
+    int playerID;
 
     //コンストラクタ
     Player(GameObject* parent);

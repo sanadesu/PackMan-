@@ -20,10 +20,19 @@ void Player::Initialize()
     assert(pStage != nullptr);
 
     //モデルデータのロード
-    hModel_ = Model::Load("Player.fbx");
+    hModel_ = Model::Load("Enemy.fbx");
     assert(hModel_ >= 0);
-    transform_.position_ = XMFLOAT3(pStage->GetX() + 0.5, 0, (pStage->GetY() + 0.5));
 
+    for (int i = 0; i < 3; i++)
+    {
+        if (playerID == i)
+        {
+            transform_.position_ = XMFLOAT3(pStage->GetX(i) + 0.5, 0, (pStage->GetY(i) + 0.5));
+
+        }
+    }
+   
+    
     //nextX = pStage->GetListPos().second;
 
     //nextY = pStage->GetListPos().first;
@@ -42,49 +51,49 @@ void Player::Update()
         pEnemyPac = (EnemyPac*)FindObject("EnemyPac");
         assert(pEnemyPac != nullptr);
 
-        nextX = pStage->GetNextMovePos().second + 0.5f;
+        nextX[0] = pStage->GetNextMovePos(playerID).second + 0.5f;
         //nextX = pEnemyPac->GetPosition().x;
-        nextY = pStage->GetNextMovePos().first + 0.5f;
+        nextY[0] = pStage->GetNextMovePos(playerID).first + 0.5f;
         //nextY = pEnemyPac->GetPosition().z;
     }
     //前回の位置ベクトルになるやつ？
     XMVECTOR prevPosition = XMLoadFloat3(&transform_.position_);
     pStage->SetGoalCellX((int)transform_.position_.x);
     pStage->SetGoalCellY((int)transform_.position_.z);
-    if ((int)transform_.position_.x == (int)nextX && (int)transform_.position_.z == (int)nextY )
+    if ((int)transform_.position_.x == (int)nextX[0] && (int)transform_.position_.z == (int)nextY[0] )
     {
         EnemyPac* pEnemyPac;
         pEnemyPac = (EnemyPac*)FindObject("EnemyPac");
         assert(pEnemyPac != nullptr);
 
-        nextX = pStage->GetNextMovePos().second + 0.5f;
+        nextX[0] = pStage->GetNextMovePos(playerID).second + 0.5f;
         //nextX = pEnemyPac->GetPosition().x;
-        nextY = pStage->GetNextMovePos().first + 0.5f;
+        nextY[0] = pStage->GetNextMovePos(playerID).first + 0.5f;
         //nextY = pEnemyPac->GetPosition().z;
     }
-    if (transform_.position_.x < nextX)
+    if (transform_.position_.x < nextX[0])
     {
         transform_.position_.x += 0.1f;
-        if (transform_.position_.x >= nextX)
-            transform_.position_.x = nextX;
+        if (transform_.position_.x >= nextX[0])
+            transform_.position_.x = nextX[0];
     }
-    else if (transform_.position_.x > nextX)
+    else if (transform_.position_.x > nextX[0])
     {
         transform_.position_.x -= 0.1f;
-        if(transform_.position_.x < nextX)
-            transform_.position_.x = nextX;
+        if(transform_.position_.x < nextX[0])
+            transform_.position_.x = nextX[0];
     }
-    if (transform_.position_.z < nextY)
+    if (transform_.position_.z < nextY[0])
     {
         transform_.position_.z += 0.1f;
-        if (transform_.position_.z > nextY)
-            transform_.position_.z = nextY;
+        if (transform_.position_.z > nextY[0])
+            transform_.position_.z = nextY[0];
     }
-    else if (transform_.position_.z >= nextY)
+    else if (transform_.position_.z >= nextY[0])
     {
         transform_.position_.z -= 0.1f;
-        if (transform_.position_.z < nextY)
-            transform_.position_.z = nextY;
+        if (transform_.position_.z < nextY[0])
+            transform_.position_.z = nextY[0];
     }
 
     transform_.position_.x;
@@ -228,10 +237,10 @@ void Player::OnCollision(GameObject* pTarget)
 
 void Player::SetNextX(float x_)
 {
-    nextX = x_;
+    nextX[0] = x_;
 }
 
 void Player::SetNextY(float y_)
 {
-    nextY = y_;
+    nextY[0] = y_;
 }

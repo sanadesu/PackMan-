@@ -36,8 +36,8 @@ class Stage : public GameObject
 
     int startCellX[3] = {0,0,0};//敵
     int startCellY[3] = {0,0,0};
-    int goalCellX = 2;
-    int goalCellY = 2;
+    int goalCellX[3] = { 2,2,2 };
+    int goalCellY[3] = { 2,3,4 };
 
     int time = 0;
     bool flag = false;
@@ -47,7 +47,7 @@ class Stage : public GameObject
 
     std::pair<int, int> MapStart;
     std::pair<int, int> MapGoal;
-    std::pair<int, int> min;
+    std::pair<int, int> min[3];
 
     std::list<std::pair<int, int>> minCost;
     std::list<std::pair<int, int>> nowCost;
@@ -58,7 +58,8 @@ class Stage : public GameObject
         RED = 0,
         PINK,
         CYAN,
-        ORANGE
+        ORANGE,
+        MAX
     };
 public:
 
@@ -117,8 +118,8 @@ public:
     void Show();
 
     //プレイヤークラスで使ったゲッター。スタート位置。
-    int GetX();
-    int GetY();
+    int GetX(int ID);
+    int GetY(int ID);
 
     void SetStartCellX(int X, int num);
     void SetStartCellY(int Y,int num);
@@ -133,5 +134,5 @@ public:
     void InitMap();
     void Dijkstra(cMap cel_, cMap goal);
 
-    std::pair<int, int> GetNextMovePos();
+    std::pair<int, int> GetNextMovePos(int ID);
 };
