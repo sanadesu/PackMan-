@@ -36,8 +36,8 @@ class Stage : public GameObject
 
     int startCellX[3] = {0,0,0};//敵
     int startCellY[3] = {0,0,0};
-    int goalCellX[3] = { 2,2,2 };
-    int goalCellY[3] = { 2,3,4 };
+    int goalCellX[3] = { 2,3,4 };
+    int goalCellY[3] = { 2,2,2 };
 
     int time = 0;
     bool flag = false;
@@ -45,12 +45,12 @@ class Stage : public GameObject
     std::list<std::pair<int, int>> move;
     std::pair<int, int> nextMove[3];
 
-    std::pair<int, int> MapStart;
+    std::pair<int, int> MapStart[3];
     std::pair<int, int> MapGoal;
     std::pair<int, int> min[3];
 
-    std::list<std::pair<int, int>> minCost;
-    std::list<std::pair<int, int>> nowCost;
+    std::list<std::pair<int, int>> minCost[3];
+    std::list<std::pair<int, int>> nowCost[3];
     std::vector<std::vector<std::pair<int, int>>> data;
 
     enum
@@ -121,11 +121,11 @@ public:
     int GetX(int ID);
     int GetY(int ID);
 
-    void SetStartCellX(int X, int num);
-    void SetStartCellY(int Y,int num);
+    void SetStartCellX(int X);
+    void SetStartCellY(int Y);
 
-    void SetGoalCellX(int X);
-    void SetGoalCellY(int Y);
+    void SetGoalCellX(int X, int num);
+    void SetGoalCellY(int Y, int num);
 
     std::pair<int, int> GetListPos();
 

@@ -40,8 +40,8 @@ void EnemyPac::Initialize()
 //更新
 void EnemyPac::Update()
 {
-    pStage->SetStartCellX((int)transform_.position_.x, 0);
-    pStage->SetStartCellY((int)transform_.position_.z, 0);
+    pStage->SetStartCellX((int)transform_.position_.x);
+    pStage->SetStartCellY((int)transform_.position_.z);
     
     //前回の位置ベクトルになるやつ？
     XMVECTOR prevPosition = XMLoadFloat3(&transform_.position_);

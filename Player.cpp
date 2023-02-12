@@ -44,6 +44,7 @@ void Player::Initialize()
 //更新
 void Player::Update()
 {
+
     //if (start == false)
     {
         start = true;
@@ -51,49 +52,54 @@ void Player::Update()
         pEnemyPac = (EnemyPac*)FindObject("EnemyPac");
         assert(pEnemyPac != nullptr);
 
-        nextX[0] = pStage->GetNextMovePos(playerID).second + 0.5f;
+        nextX[playerID] = pStage->GetNextMovePos(playerID).second + 0.5f;
         //nextX = pEnemyPac->GetPosition().x;
-        nextY[0] = pStage->GetNextMovePos(playerID).first + 0.5f;
+        nextY[playerID] = pStage->GetNextMovePos(playerID).first + 0.5f;
         //nextY = pEnemyPac->GetPosition().z;
     }
     //前回の位置ベクトルになるやつ？
     XMVECTOR prevPosition = XMLoadFloat3(&transform_.position_);
-    pStage->SetGoalCellX((int)transform_.position_.x);
-    pStage->SetGoalCellY((int)transform_.position_.z);
-    if ((int)transform_.position_.x == (int)nextX[0] && (int)transform_.position_.z == (int)nextY[0] )
+
+    //for (int i = 0; i < 3; i++)
+    {
+        pStage->SetGoalCellX((int)transform_.position_.x,playerID);
+        pStage->SetGoalCellY((int)transform_.position_.z,playerID);
+    }
+    
+    if ((int)transform_.position_.x == (int)nextX[playerID] && (int)transform_.position_.z == (int)nextY[playerID] )
     {
         EnemyPac* pEnemyPac;
         pEnemyPac = (EnemyPac*)FindObject("EnemyPac");
         assert(pEnemyPac != nullptr);
 
-        nextX[0] = pStage->GetNextMovePos(playerID).second + 0.5f;
+        nextX[playerID] = pStage->GetNextMovePos(playerID).second + 0.5f;
         //nextX = pEnemyPac->GetPosition().x;
-        nextY[0] = pStage->GetNextMovePos(playerID).first + 0.5f;
+        nextY[playerID] = pStage->GetNextMovePos(playerID).first + 0.5f;
         //nextY = pEnemyPac->GetPosition().z;
     }
-    if (transform_.position_.x < nextX[0])
+    if (transform_.position_.x < nextX[playerID])
     {
         transform_.position_.x += 0.1f;
-        if (transform_.position_.x >= nextX[0])
-            transform_.position_.x = nextX[0];
+        if (transform_.position_.x >= nextX[playerID])
+            transform_.position_.x = nextX[playerID];
     }
-    else if (transform_.position_.x > nextX[0])
+    else if (transform_.position_.x > nextX[playerID])
     {
         transform_.position_.x -= 0.1f;
-        if(transform_.position_.x < nextX[0])
-            transform_.position_.x = nextX[0];
+        if(transform_.position_.x < nextX[playerID])
+            transform_.position_.x = nextX[playerID];
     }
-    if (transform_.position_.z < nextY[0])
+    if (transform_.position_.z < nextY[playerID])
     {
         transform_.position_.z += 0.1f;
-        if (transform_.position_.z > nextY[0])
-            transform_.position_.z = nextY[0];
+        if (transform_.position_.z > nextY[playerID])
+            transform_.position_.z = nextY[playerID];
     }
-    else if (transform_.position_.z >= nextY[0])
+    else if (transform_.position_.z >= nextY[playerID])
     {
         transform_.position_.z -= 0.1f;
-        if (transform_.position_.z < nextY[0])
-            transform_.position_.z = nextY[0];
+        if (transform_.position_.z < nextY[playerID])
+            transform_.position_.z = nextY[playerID];
     }
 
     transform_.position_.x;
@@ -212,14 +218,21 @@ void Player::Update()
     //内積は鋭角だから右に移動しても左に移動しても左を向いている
     //→どうする？
 
-
+    if (playerID == 2)
+    {
+        transform_.position_ = XMFLOAT3(1.5, 0, 1.5);
+    }
 }
 
 //描画
 void Player::Draw()
 {
-    Model::SetTransform(hModel_, transform_);
-    Model::Draw(hModel_);
+    //if (playerID != 0)
+    {
+        Model::SetTransform(hModel_, transform_);
+        Model::Draw(hModel_);
+    }
+    
 }
 
 //開放

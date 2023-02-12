@@ -82,50 +82,73 @@ void Stage::Update()
     Player* pPlayer = (Player*)FindObject("Player");
     EnemyPac* pEnemyPac = (EnemyPac*)FindObject("EnemyPac");
 
-    MapStart.first = (int)pPlayer->GetPosition().z;
-    MapStart.second = (int)pPlayer->GetPosition().x;
+    for (int i = 0; i < 3; i++)
+    {
+        if (pPlayer->playerID == i)
+        {
+            MapStart[i].first = (int)pPlayer->GetPosition().z;
+            MapStart[i].second = (int)pPlayer->GetPosition().x;
+        }
+    }
+    
+  
 
 
     MapGoal.first = (int)pEnemyPac->GetPosition().z;
     MapGoal.second = (int)pEnemyPac->GetPosition().x;
 
-    if (time % 60 == 0)
-    {
-        InitMap();
-        Dijkstra(CostMap[MapStart.first][MapStart.second], CostMap[MapGoal.first][MapGoal.second]);
-        minCost.clear();
+    
+        if (time % 60 == 0)
+        {
+            InitMap();
+            for (int i = 0; i < 3; i++)
+            {
+                Dijkstra(CostMap[MapStart[i].first][MapStart[i].second], CostMap[MapGoal.first][MapGoal.second]);
+                minCost[i].clear();
+            }
+           
+            
+
+        }
         //経路を探索
         Search(CostMap[MapGoal.first][MapGoal.second].cel);
         flag = false;
-        if (minCost.size() != 0)
+
+        for (int i = 0; i < 3; i++)
         {
-            min[0] = (minCost.back());
-            minCost.pop_back();
+            if (minCost[i].size() != 0)
+            {
+                min[i] = (minCost[i].back());
+                minCost[i].pop_back();
+            }
+
+            if (minCost[i].size() != 0)
+            {
+                if (min[i].first == (int)pPlayer->GetPosition().z && min[i].second == (int)pPlayer->GetPosition().x)
+                {
+                    //std::make_pair(minCost.pop_front());
+                    min[i] = (minCost[i].back());
+                    minCost[i].pop_back();
+
+                    //min.first;
+                    //COSTMAP[min.first][min.second] = -2;
+                    //COSTMAP[min.second][min.first] = -2;
+                }
+
+            }
+            else
+            {
+
+                minCost[i].clear();
+            }
         }
-        
-    }
-    time++;
-
-    if(minCost.size() != 0)
-    {
-        if (min[0].first  == (int)pPlayer->GetPosition().z && min[0].second == (int)pPlayer->GetPosition().x)
-        {
-            //std::make_pair(minCost.pop_front());
-            min[0] = (minCost.back());
-            minCost.pop_back();
-
-            //min.first;
-            //COSTMAP[min.first][min.second] = -2;
-            //COSTMAP[min.second][min.first] = -2;
-        }
-        
-    }
-    else
-    {
-
-        minCost.clear();
-    }
     
+
+    
+    
+   
+
+        time++;
 
 
     for (int row = 0; row < MAP_ROW; row++)
@@ -285,24 +308,24 @@ int Stage::GetY(int ID)
     return goalCellY[ID];
 }
 
-void Stage::SetStartCellX(int X, int num)
+void Stage::SetStartCellX(int X)
 {
-    startCellX[num] = X;
+    startCellX[0] = X;//配列いらん
 }
 
-void Stage::SetStartCellY(int Y, int num)
+void Stage::SetStartCellY(int Y)
 {
-    startCellY[num] = Y;
+    startCellY[0] = Y;//配列いらん
 }
 
-void Stage::SetGoalCellX(int X)
+void Stage::SetGoalCellX(int X, int num)
 {
-    goalCellX[0] = X;
+    goalCellX[num] = X;
 }
 
-void Stage::SetGoalCellY(int Y)
+void Stage::SetGoalCellY(int Y, int num)
 {
-    goalCellY[0] = Y;
+    goalCellY[num] = Y;
 }
 
 std::pair<int, int> Stage::GetListPos()
@@ -324,11 +347,16 @@ void Stage::InitMap()
             CostMap[i][j].cel = { i, j };
         }
     }
-    //スタートのコストを0にする
-    CostMap[MapStart.first][MapStart.second].cost = 0;
-    //スタートのルートを確定する
-    CostMap[MapStart.first][MapStart.second].done = true;
-    CostMap[MapStart.first][MapStart.second].prevNode;
+
+    for (int i = 0; i < 3; i++)
+    {
+        //スタートのコストを0にする
+        CostMap[MapStart[i].first][MapStart[i].second].cost = 0;
+        //スタートのルートを確定する
+        CostMap[MapStart[i].first][MapStart[i].second].done = true;
+        CostMap[MapStart[i].first][MapStart[i].second].prevNode;
+    }
+    
     //ゴールのルートを確定する
     CostMap[MapGoal.first][MapGoal.second].done = true;
 }
@@ -361,30 +389,33 @@ void Stage::Dijkstra(cMap cel_, cMap goal)
 
 void Stage::Search(pair<int, int> node)
 {
-    if (node.first > 0)
+    for (int i = 0; i < 3; i++)
     {
-        if (node.first != MapStart.first || node.second != MapStart.second)
+        if (node.first > 0)
         {
-            CostMap[node.first][node.second].done = true;
-            nowCost.push_back({CostMap[node.first][node.second].cel.first, CostMap[node.first][node.second].cel.second});
-            Search(CostMap[node.first][node.second].prevNode);
+            if (node.first != MapStart[i].first || node.second != MapStart[i].second)
+            {
+                CostMap[node.first][node.second].done = true;
+                nowCost[i].push_back({ CostMap[node.first][node.second].cel.first, CostMap[node.first][node.second].cel.second });
+                Search(CostMap[node.first][node.second].prevNode);
+            }
         }
-    }
 
-    if (node.first == MapGoal.first && node.second == MapGoal.second)
-    {
-        if (minCost.size() == 0 || minCost.size() > nowCost.size())
+        if (node.first == MapGoal.first && node.second == MapGoal.second)
         {
-            minCost.clear();
-            minCost = nowCost;
-            nowCost.clear();
+            if (minCost[i].size() == 0 || minCost[i].size() > nowCost[i].size())
+            {
+                minCost[i].clear();
+                minCost[i] = nowCost[i];
+                nowCost[i].clear();
+            }
+            else
+            {
+                nowCost[i].clear();
+            }
         }
-        else
-        {
-            nowCost.clear();
-        }
+        i += 2;//////
     }
-    int a = 0;
 }
 
 
