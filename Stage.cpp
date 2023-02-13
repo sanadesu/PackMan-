@@ -97,30 +97,32 @@ void Stage::Update()
     MapGoal.first = (int)pEnemyPac->GetPosition().z;
     MapGoal.second = (int)pEnemyPac->GetPosition().x;
 
-    
-        if (time % 60 == 0)
+    for (int i = 0; i < 3; i++)
+    {
+        if (time % 60 == 0 || minCost[i].size() == 0)
         {
             InitMap();
-            for (int i = 0; i < 3; i++)
-            {
-                Dijkstra(CostMap[MapStart[i].first][MapStart[i].second], CostMap[MapGoal.first][MapGoal.second]);
-                minCost[i].clear();
-                //経路を探索
-                Search(CostMap[MapGoal.first][MapGoal.second].cel, i);
-            }
-            flag = false;
-            
 
-        }
-       
-
-        for (int i = 0; i < 3; i++)
-        {
+            Dijkstra(CostMap[MapStart[i].first][MapStart[i].second], CostMap[MapGoal.first][MapGoal.second]);
+            minCost[i].clear();
+            //経路を探索
+            Search(CostMap[MapGoal.first][MapGoal.second].cel, i);
             if (minCost[i].size() != 0)
             {
                 min[i] = (minCost[i].back());
                 minCost[i].pop_back();
             }
+
+            flag = false;
+
+
+        }
+    }
+       
+
+        for (int i = 0; i < 3; i++)
+        {
+           
 
             if (minCost[i].size() != 0)
             {
@@ -402,7 +404,7 @@ void Stage::Search(pair<int, int> node,int ID)
                 //if(nowCost[ID].size() < 40000)
                 if (CostMap[node.first][node.second].prevNode.first != -100 && CostMap[node.first][node.second].prevNode.second != -100 )
                 {
-                Search(CostMap[node.first][node.second].prevNode, ID);
+                    Search(CostMap[node.first][node.second].prevNode, ID);
                     /*if (CostMap[node.first][node.second].cel.first != CostMap[MapGoal.first][MapGoal.second].cel.first && 
                         CostMap[node.first][node.second].cel.second != CostMap[MapGoal.first][MapGoal.second].cel.second
                        || nowCost[ID].size() <= 2)
