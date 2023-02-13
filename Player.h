@@ -12,6 +12,7 @@ class Player : public GameObject
     bool start = false;
     Stage* pStage;
     
+    bool first = false;
 public:
     int playerID;
 

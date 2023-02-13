@@ -30,7 +30,7 @@ void EnemyPac::Initialize()
     hModel_ = Model::Load("Player.fbx");
     assert(hModel_ >= 0);
     //transform_.position_ = XMFLOAT3(pStage->GetX() + -3.5, 0, (pStage->GetY() + 0.5));
-    transform_.position_ = XMFLOAT3(13.5, 0, 8.5);
+    transform_.position_ = XMFLOAT3(18.5, 0, 1.5);
 
     playerPos = pPlayer->GetPosition();
     SphereCollider* collision = new SphereCollider(XMFLOAT3(0, 0.3, 0), 0.3f);

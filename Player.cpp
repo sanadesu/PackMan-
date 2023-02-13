@@ -23,15 +23,8 @@ void Player::Initialize()
     hModel_ = Model::Load("Enemy.fbx");
     assert(hModel_ >= 0);
 
-    for (int i = 0; i < 3; i++)
-    {
-        if (playerID == i)
-        {
-            transform_.position_ = XMFLOAT3(pStage->GetX(i) + 0.5, 0, (pStage->GetY(i) + 0.5));
-
-        }
-    }
    
+
     
     //nextX = pStage->GetListPos().second;
 
@@ -44,6 +37,11 @@ void Player::Initialize()
 //更新
 void Player::Update()
 {
+    if (first == false)
+    {
+        transform_.position_ = XMFLOAT3(pStage->GetX(playerID) + 0.5, 0, (pStage->GetY(playerID) + 0.5));
+        first = true;
+    }
 
     //if (start == false)
     {
@@ -170,7 +168,6 @@ void Player::Update()
         transform_.rotate_.y = angle * 180.0f / 3.14f;
     }
 
-
     //壁との衝突判定
     int checkX, checkZ;
     
@@ -218,10 +215,10 @@ void Player::Update()
     //内積は鋭角だから右に移動しても左に移動しても左を向いている
     //→どうする？
 
-    if (playerID == 2)
+   /* if (playerID == 0)
     {
         transform_.position_ = XMFLOAT3(1.5, 0, 1.5);
-    }
+    }*/
 }
 
 //描画
@@ -248,6 +245,7 @@ void Player::OnCollision(GameObject* pTarget)
     
 }
 
+/// 
 void Player::SetNextX(float x_)
 {
     nextX[0] = x_;
