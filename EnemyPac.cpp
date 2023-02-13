@@ -40,6 +40,10 @@ void EnemyPac::Initialize()
 //XV
 void EnemyPac::Update()
 {
+    goalPos[0] = { (int)transform_.position_.z,(int)transform_.position_.x };
+
+   
+
     pStage->SetStartCellX((int)transform_.position_.x);
     pStage->SetStartCellY((int)transform_.position_.z);
     
@@ -189,4 +193,9 @@ void EnemyPac::OnCollision(GameObject* pTarget)
         //1516
 
     }
+}
+
+int EnemyPac::GetGoalPos(int ID)
+{
+    return 0;
 }

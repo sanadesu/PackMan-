@@ -7,6 +7,7 @@
 class EnemyPac : public GameObject
 {
     int hModel_;    //ƒ‚ƒfƒ‹”Ô†
+    std::pair<int, int> goalPos[3];
 
     Player* pPlayer;
     Stage* pStage;
@@ -36,4 +37,6 @@ public:
     //‰½‚©‚É“–‚½‚Á‚½
     //ˆø”FpTarget “–‚½‚Á‚½‘Šè
     void OnCollision(GameObject* pTarget) override;
+
+    int GetGoalPos(int ID);
 };

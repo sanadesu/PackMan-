@@ -93,9 +93,27 @@ void Stage::Update()
     
   
 
+    ///////ここ!
+    //for (int i = 0; i < 3; i++)
+    {
+        MapGoal[0].first = (int)pEnemyPac->GetPosition().z;
+        MapGoal[0].second = (int)pEnemyPac->GetPosition().x;
+    }
+    for (DIRECTION dir : DIRECTIONS)
+    {
+       /* MapGoal[1].first = MapGoal[0].first + dir.dirRow;
+        MapGoal[1].second = MapGoal[0].second + dir.dirCol;
 
-    MapGoal.first = (int)pEnemyPac->GetPosition().z;
-    MapGoal.second = (int)pEnemyPac->GetPosition().x;
+        if (COSTMAP[MapGoal[1].first][MapGoal[1].second] > 0)
+        break
+
+        if (totalCosts[nextRow][nextCol] > totalCosts[cell.row][cell.col] + COSTMAP[nextRow][nextCol])
+        {
+            totalCosts[nextRow][nextCol] = totalCosts[cell.row][cell.col] + COSTMAP[nextRow][nextCol];
+            CalcCosts({ nextRow, nextCol });
+        }*/
+    }
+    
 
     for (int i = 0; i < 3; i++)
     {
@@ -103,10 +121,10 @@ void Stage::Update()
         {
             InitMap();
 
-            Dijkstra(CostMap[MapStart[i].first][MapStart[i].second], CostMap[MapGoal.first][MapGoal.second]);
+            Dijkstra(CostMap[MapStart[i].first][MapStart[i].second], CostMap[MapGoal[i].first][MapGoal[i].second],i);
             minCost[i].clear();
             //経路を探索
-            Search(CostMap[MapGoal.first][MapGoal.second].cel, i);
+            Search(CostMap[MapGoal[i].first][MapGoal[i].second].cel, i);
             if (minCost[i].size() != 0)
             {
                 min[i] = (minCost[i].back());
@@ -357,16 +375,16 @@ void Stage::InitMap()
         //スタートのルートを確定する
         CostMap[MapStart[i].first][MapStart[i].second].done = true;
         CostMap[MapStart[i].first][MapStart[i].second].prevNode;
+        //ゴールのルートを確定する
+        CostMap[MapGoal[i].first][MapGoal[i].second].done = true;
     }
     
-    //ゴールのルートを確定する
-    CostMap[MapGoal.first][MapGoal.second].done = true;
 }
 
 //Dijkstra探索
 //引数 : cell    今いるセル
 //引数 : gorl_    ゴール地点
-void Stage::Dijkstra(cMap cel_, cMap goal)
+void Stage::Dijkstra(cMap cel_, cMap goal,int ID)
 {
     //4方向にやる
     for (const auto& dir : DIRECTIONS)
@@ -382,7 +400,7 @@ void Stage::Dijkstra(cMap cel_, cMap goal)
         {
             CostMap[nextRow][nextCol].prevNode = CostMap[cel_.cel.first][cel_.cel.second].cel;
             CostMap[nextRow][nextCol].cost = CostMap[cel_.cel.first][cel_.cel.second].cost + CostMap[nextRow][nextCol].map;
-            Dijkstra(CostMap[nextRow][nextCol], CostMap[MapGoal.first][MapGoal.second]);
+            Dijkstra(CostMap[nextRow][nextCol], CostMap[MapGoal[ID].first][MapGoal[ID].second],ID);
         }
     }
     return;
@@ -415,7 +433,7 @@ void Stage::Search(pair<int, int> node,int ID)
             }
         }
 
-        if (node.first == MapGoal.first && node.second == MapGoal.second)
+        if (node.first == MapGoal[ID].first && node.second == MapGoal[ID].second)
         {
             if (minCost[ID].size() == 0 || minCost[ID].size() > nowCost[ID].size())
             {

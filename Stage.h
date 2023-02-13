@@ -49,7 +49,7 @@ class Stage : public GameObject
     std::pair<int, int> nextMove[3];
 
     std::pair<int, int> MapStart[3];
-    std::pair<int, int> MapGoal;
+    std::pair<int, int> MapGoal[3];
     std::pair<int, int> min[3];
 
     std::list<std::pair<int, int>> minCost[3];
@@ -136,7 +136,7 @@ public:
     void Search(std::pair<int, int> node,int ID);
 
     void InitMap();
-    void Dijkstra(cMap cel_, cMap goal);
+    void Dijkstra(cMap cel_, cMap goal,int ID);
 
     std::pair<int, int> GetNextMovePos(int ID);
 };
