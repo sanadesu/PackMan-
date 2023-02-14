@@ -11,6 +11,7 @@ class Player : public GameObject
     
     bool start = false;
     Stage* pStage;
+    std::pair<int, int> pos[3] = {};
     
     bool first = false;
 public:
@@ -43,4 +44,6 @@ public:
 
     void SetNextX(float x_);
     void SetNextY(float y_);
+
+    std::pair<int, int> GetPos(int ID);
 };

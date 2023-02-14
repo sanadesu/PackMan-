@@ -48,8 +48,6 @@ class Stage : public GameObject
     std::list<std::pair<int, int>> move;
     std::pair<int, int> nextMove[3];
 
-    std::pair<int, int> MapStart[3];
-    std::pair<int, int> MapGoal[3];
     std::pair<int, int> min[3];
 
     std::list<std::pair<int, int>> minCost[3];
@@ -65,6 +63,8 @@ class Stage : public GameObject
         MAX
     };
 public:
+    std::pair<int, int> MapStart[3];
+    std::pair<int, int> MapGoal[3];
 
     typedef struct tagCell {
         int row;

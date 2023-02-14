@@ -82,43 +82,55 @@ void Stage::Update()
     Player* pPlayer = (Player*)FindObject("Player");
     EnemyPac* pEnemyPac = (EnemyPac*)FindObject("EnemyPac");
 
-    for (int i = 0; i < 3; i++)
-    {
-        if (pPlayer->playerID == i)
-        {
-            MapStart[i].first = (int)pPlayer->GetPosition().z;
-            MapStart[i].second = (int)pPlayer->GetPosition().x;
-        }
-    }
+    
     
   
 
-    ///////ここ!
-    //for (int i = 0; i < 3; i++)
-    {
-        MapGoal[0].first = (int)pEnemyPac->GetPosition().z;
-        MapGoal[0].second = (int)pEnemyPac->GetPosition().x;
-    }
-    for (DIRECTION dir : DIRECTIONS)
-    {
-       /* MapGoal[1].first = MapGoal[0].first + dir.dirRow;
-        MapGoal[1].second = MapGoal[0].second + dir.dirCol;
-
-        if (COSTMAP[MapGoal[1].first][MapGoal[1].second] > 0)
-        break
-
-        if (totalCosts[nextRow][nextCol] > totalCosts[cell.row][cell.col] + COSTMAP[nextRow][nextCol])
-        {
-            totalCosts[nextRow][nextCol] = totalCosts[cell.row][cell.col] + COSTMAP[nextRow][nextCol];
-            CalcCosts({ nextRow, nextCol });
-        }*/
-    }
+   
     
 
     for (int i = 0; i < 3; i++)
     {
         if (time % 60 == 0 || minCost[i].size() == 0)
         {
+            ///////ここ!
+   //for (int i = 0; i < 3; i++)
+            if(i == 0)
+            {
+                MapGoal[0].first = (int)pEnemyPac->GetPosition().z;
+                MapGoal[0].second = (int)pEnemyPac->GetPosition().x;
+            }
+            if (i == 1)
+            {
+                for (DIRECTION dir : DIRECTIONS)
+                {
+                    MapGoal[1].first = MapGoal[0].first + dir.dirRow;
+                    MapGoal[1].second = MapGoal[0].second + dir.dirCol;
+
+                    if (COSTMAP[MapGoal[1].first][MapGoal[1].second] == 0)
+                    {
+
+                        break;
+                    }
+                }
+            }
+            if (i == 2)
+            {
+                do
+                {
+                    MapGoal[2].first = rand() % 13;
+                    MapGoal[2].second = rand() % 18;
+                } while (COSTMAP[MapGoal[2].first][MapGoal[2].second] == -1);
+                
+            }
+            
+            //if (pPlayer->GetPos(i).first != 0)
+            /*{
+                MapStart[i].first = pPlayer->GetPos(i).first;
+                MapStart[i].second = pPlayer->GetPos(i).second;
+            }*/
+            
+
             InitMap();
 
             Dijkstra(CostMap[MapStart[i].first][MapStart[i].second], CostMap[MapGoal[i].first][MapGoal[i].second],i);
@@ -144,7 +156,7 @@ void Stage::Update()
 
             if (minCost[i].size() != 0)
             {
-                if (min[i].first == (int)pPlayer->GetPosition().z && min[i].second == (int)pPlayer->GetPosition().x)
+                if (min[i].first == MapStart[i].first && min[i].second == MapStart[i].second)
                 {
                     //std::make_pair(minCost.pop_front());
                     min[i] = (minCost[i].back());
@@ -163,29 +175,24 @@ void Stage::Update()
             }
         }
     
-
-    
-    
-   
-
         time++;
 
 
-    for (int row = 0; row < MAP_ROW; row++)
-    {
-        for (int col = 0; col < MAP_COL; col++)
-        {
-            if (CostMap[row][col].done == true)
-            {
-                COSTMAP[row][col] = -2;
-            }
-            else if (COSTMAP[row][col] == -2)
-            {
-                COSTMAP[row][col] = 0;
-            }
-            //CostMap[row][col].done = false;
-        }
-    }
+    //for (int row = 0; row < MAP_ROW; row++)
+    //{
+    //    for (int col = 0; col < MAP_COL; col++)
+    //    {
+    //        if (CostMap[row][col].done == true)
+    //        {
+    //            COSTMAP[row][col] = -2;
+    //        }
+    //        else if (COSTMAP[row][col] == -2)
+    //        {
+    //            COSTMAP[row][col] = 0;
+    //        }
+    //        //CostMap[row][col].done = false;
+    //    }
+    //}
 
     for (int row = 0; row < MAP_ROW; row++)
     {

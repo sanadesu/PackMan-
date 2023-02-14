@@ -32,6 +32,7 @@ void Player::Initialize()
     SphereCollider* collision = new SphereCollider(XMFLOAT3(0, 0.3f, 0), 0.3f);
     AddCollider(collision);
 
+    pos[playerID] = { transform_.position_.z ,transform_.position_.x };
 }
 
 //çXêV
@@ -77,25 +78,25 @@ void Player::Update()
     }
     if (transform_.position_.x < nextX[playerID])
     {
-        transform_.position_.x += 0.1f;
+        transform_.position_.x += 0.09f;
         if (transform_.position_.x >= nextX[playerID])
             transform_.position_.x = nextX[playerID];
     }
     else if (transform_.position_.x > nextX[playerID])
     {
-        transform_.position_.x -= 0.1f;
+        transform_.position_.x -= 0.09f;
         if(transform_.position_.x < nextX[playerID])
             transform_.position_.x = nextX[playerID];
     }
     if (transform_.position_.z < nextY[playerID])
     {
-        transform_.position_.z += 0.1f;
+        transform_.position_.z += 0.09f;
         if (transform_.position_.z > nextY[playerID])
             transform_.position_.z = nextY[playerID];
     }
     else if (transform_.position_.z >= nextY[playerID])
     {
-        transform_.position_.z -= 0.1f;
+        transform_.position_.z -= 0.09f;
         if (transform_.position_.z < nextY[playerID])
             transform_.position_.z = nextY[playerID];
     }
@@ -219,6 +220,10 @@ void Player::Update()
     {
         transform_.position_ = XMFLOAT3(1.5, 0, 1.5);
     }*/
+
+    pStage->MapStart[playerID] = { transform_.position_.z ,transform_.position_.x };
+
+   // pos[playerID] = { transform_.position_.z ,transform_.position_.x };
 }
 
 //ï`âÊ
@@ -241,7 +246,10 @@ void Player::Release()
 void Player::OnCollision(GameObject* pTarget)
 {
     //ìñÇΩÇ¡ÇΩÇ∆Ç´ÇÃèàóù
+    if (pTarget->GetObjectName() == "EnemyPac")
+    {
 
+    }
     
 }
 
@@ -254,4 +262,9 @@ void Player::SetNextX(float x_)
 void Player::SetNextY(float y_)
 {
     nextY[0] = y_;
+}
+
+std::pair<int, int> Player::GetPos(int ID)
+{
+   return pos[ID];
 }

@@ -4,7 +4,7 @@
 #include "Engine/CsvReader.h"
 #include "Stage.h"
 #include "Engine/SphereCollider.h"
-
+#include "Engine/SceneManager.h"
 
 //コンストラクタ
 EnemyPac::EnemyPac(GameObject* parent)
@@ -187,6 +187,8 @@ void EnemyPac::OnCollision(GameObject* pTarget)
     //敵に当たったとき
     if (pTarget->GetObjectName() == "Player")
     {
+        SceneManager* pSceneManager = (SceneManager*)FindObject("SceneManager");
+        pSceneManager->ChangeScene(SCENE_ID_RESULT);
         //KillMe();
         //2
         //678
