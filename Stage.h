@@ -34,13 +34,13 @@ class Stage : public GameObject
     int hModel_[3];    //モデル番号
     int map_[20][15];
 
-    int startCellX[3] = {0,0,0};//敵
+    int startCellX[3] = {0,0,0};
     int startCellY[3] = {0,0,0};
-    /*int goalCellX[3] = { 9,9,9 };
-    int goalCellY[3] = { 8,7,6 };*/
+    int goalCellX[3] = { 9,9,9 };//敵の位置
+    int goalCellY[3] = { 8,7,6 };//敵の位置
 
-    int goalCellX[3] = { 1,9,18 };
-    int goalCellY[3] = { 1,7,13 };
+    /*int goalCellX[3] = { 1,9,18 };
+    int goalCellY[3] = { 1,7,13 };*/
 
     int time = 0;
     bool flag = false;

@@ -5,7 +5,7 @@
 //◆◆◆を管理するクラス
 class Player : public GameObject
 {
-    int hModel_;    //モデル番号
+    int hModel_[3];    //モデル番号
     float nextX[3] = { 0,0,0 };
     float nextY[3] = { 0,0,0 };
     

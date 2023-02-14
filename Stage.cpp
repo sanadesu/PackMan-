@@ -82,19 +82,11 @@ void Stage::Update()
     Player* pPlayer = (Player*)FindObject("Player");
     EnemyPac* pEnemyPac = (EnemyPac*)FindObject("EnemyPac");
 
-    
-    
-  
-
-   
-    
-
     for (int i = 0; i < 3; i++)
     {
         if (time % 60 == 0 || minCost[i].size() == 0)
         {
             ///////ここ!
-   //for (int i = 0; i < 3; i++)
             if(i == 0)
             {
                 MapGoal[0].first = (int)pEnemyPac->GetPosition().z;
@@ -123,13 +115,6 @@ void Stage::Update()
                 } while (COSTMAP[MapGoal[2].first][MapGoal[2].second] == -1);
                 
             }
-            
-            //if (pPlayer->GetPos(i).first != 0)
-            /*{
-                MapStart[i].first = pPlayer->GetPos(i).first;
-                MapStart[i].second = pPlayer->GetPos(i).second;
-            }*/
-            
 
             InitMap();
 
@@ -142,40 +127,26 @@ void Stage::Update()
                 min[i] = (minCost[i].back());
                 minCost[i].pop_back();
             }
-
-            flag = false;
-
-
         }
     }
-       
 
-        for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 3; i++)
+    {
+        if (minCost[i].size() != 0)
         {
-           
-
-            if (minCost[i].size() != 0)
+            if (min[i].first == MapStart[i].first && min[i].second == MapStart[i].second)
             {
-                if (min[i].first == MapStart[i].first && min[i].second == MapStart[i].second)
-                {
-                    //std::make_pair(minCost.pop_front());
-                    min[i] = (minCost[i].back());
-                    minCost[i].pop_back();
-
-                    //min.first;
-                    //COSTMAP[min.first][min.second] = -2;
-                    //COSTMAP[min.second][min.first] = -2;
-                }
-
-            }
-            else
-            {
-
-                minCost[i].clear();
+                min[i] = (minCost[i].back());
+                minCost[i].pop_back();
             }
         }
-    
-        time++;
+        else
+        {
+            minCost[i].clear();
+        }
+    }
+
+    time++;
 
 
     //for (int row = 0; row < MAP_ROW; row++)
@@ -224,7 +195,6 @@ void Stage::Draw()
 {
     for (int x = 0; x < MAP_COL; x++)
     {
-
         for (int z = 0; z < MAP_ROW; z++)
         {
             int type;//x % 2 && z % 2;
@@ -232,15 +202,15 @@ void Stage::Draw()
             transform_.position_.z = z;
             if (COSTMAP[z][x] == -1)
             {
-                type = 1;
+                type = 1;//壁
             }
             else if (COSTMAP[z][x] >= 0)
             {
-                type = 0;
+                type = 0;//ノーマル地面
             }
             else if (COSTMAP[z][x] == -2)
             {
-                type = 2;
+                type = 2;//地面赤
             }
             Model::SetTransform(hModel_[type], transform_);
             Model::Draw(hModel_[type]);
@@ -416,7 +386,6 @@ void Stage::Dijkstra(cMap cel_, cMap goal,int ID)
 
 void Stage::Search(pair<int, int> node,int ID)
 {
-    //for (int i = 0; i < 3; i++)
     {
         if (node.first > 0)
         {
@@ -453,7 +422,7 @@ void Stage::Search(pair<int, int> node,int ID)
                 nowCost[ID].clear();
             }
         }
-        //i += 2;//////
+        //i += 2;//////敵1体
     }
 }
 

@@ -1,10 +1,11 @@
+//実は敵
 #include "Player.h"
 #include "Engine/Model.h"
 #include "Engine/Input.h"
 #include "EnemyPac.h"
 //コンストラクタ
 Player::Player(GameObject* parent)
-    :GameObject(parent, "Player"), hModel_(-1)
+    :GameObject(parent, "Player")
 {
 }
 
@@ -20,10 +21,12 @@ void Player::Initialize()
     assert(pStage != nullptr);
 
     //モデルデータのロード
-    hModel_ = Model::Load("Enemy.fbx");
+    hModel_[0] = Model::Load("Enemy.fbx");
     assert(hModel_ >= 0);
-
-   
+    hModel_[1] = Model::Load("Pink.fbx");
+    assert(hModel_ >= 0);
+    hModel_[2] = Model::Load("Orange.fbx");
+    assert(hModel_ >= 0);
 
     
     //nextX = pStage->GetListPos().second;
@@ -229,11 +232,10 @@ void Player::Update()
 //描画
 void Player::Draw()
 {
-    //if (playerID != 0)
-    {
-        Model::SetTransform(hModel_, transform_);
-        Model::Draw(hModel_);
-    }
+    
+    Model::SetTransform(hModel_[playerID], transform_);
+    Model::Draw(hModel_[playerID]);
+
     
 }
 

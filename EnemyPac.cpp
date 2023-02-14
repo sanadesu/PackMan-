@@ -1,3 +1,4 @@
+//ŽÀ‚ÍƒvƒŒƒCƒ„[
 #include "EnemyPac.h"
 #include "Engine/Model.h"
 #include "Engine/Input.h"
@@ -41,8 +42,6 @@ void EnemyPac::Initialize()
 void EnemyPac::Update()
 {
     goalPos[0] = { (int)transform_.position_.z,(int)transform_.position_.x };
-
-   
 
     pStage->SetStartCellX((int)transform_.position_.x);
     pStage->SetStartCellY((int)transform_.position_.z);

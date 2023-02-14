@@ -21,11 +21,13 @@ void PlayScene::Initialize()
 		
 		pPlayer[i]->playerID = i;
 	}
+	//pPlayer[1]->playerID = 0;//ê‘ÇQëÃÇ…Ç»ÇÈ
+
 	Instantiate<EnemyPac>(this);
 
-	Camera::SetPosition(XMFLOAT3(10, 13, -2));
+	Camera::SetPosition(XMFLOAT3(10, 17, 2));
 
-	Camera::SetTarget(XMFLOAT3(10, 5, 3));
+	Camera::SetTarget(XMFLOAT3(10, 5, 5.2f));
 }
 
 //çXêV
