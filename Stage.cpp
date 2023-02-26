@@ -82,39 +82,74 @@ void Stage::Update()
     Player* pPlayer = (Player*)FindObject("Player");
     EnemyPac* pEnemyPac = (EnemyPac*)FindObject("EnemyPac");
 
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < ENEMY_MAX; i++)
     {
         if (time % 60 == 0 || minCost[i].size() == 0)
         {
             ///////ここ!
-            if(i == 0)
+            if(i == RED)
             {
-                MapGoal[0].first = (int)pEnemyPac->GetPosition().z;
-                MapGoal[0].second = (int)pEnemyPac->GetPosition().x;
+                MapGoal[RED].first = (int)pEnemyPac->GetPosition().z;
+                MapGoal[RED].second = (int)pEnemyPac->GetPosition().x;
             }
-            if (i == 1)
+            if (i == PINK)
             {
                 for (DIRECTION dir : DIRECTIONS)
                 {
-                    MapGoal[1].first = MapGoal[0].first + dir.dirRow;
-                    MapGoal[1].second = MapGoal[0].second + dir.dirCol;
+                    MapGoal[PINK].first = MapGoal[RED].first + dir.dirRow;
+                    MapGoal[PINK].second = MapGoal[RED].second + dir.dirCol;
 
-                    if (COSTMAP[MapGoal[1].first][MapGoal[1].second] == 0)
+                    if (COSTMAP[MapGoal[PINK].first][MapGoal[PINK].second] == 0)
                     {
 
                         break;
                     }
                 }
             }
-            if (i == 2)
+            if (i == ORANGE)
             {
                 do
                 {
-                    MapGoal[2].first = rand() % 13;
-                    MapGoal[2].second = rand() % 18;
-                } while (COSTMAP[MapGoal[2].first][MapGoal[2].second] == -1);
+                    MapGoal[ORANGE].first = (rand() % 13) + 1;
+                    MapGoal[ORANGE].second = (rand() % 18) + 1;
+                } while (COSTMAP[MapGoal[ORANGE].first][MapGoal[ORANGE].second] == -1);
                 
             }
+            if (i == BLUE)
+            {
+                MapGoal[BLUE].first = (int)pEnemyPac->GetPosition().z + ((int)pEnemyPac->GetPosition().z - enemyPos[RED].z);
+                MapGoal[BLUE].second = (int)pEnemyPac->GetPosition().x + ((int)pEnemyPac->GetPosition().x - enemyPos[RED].x);
+                if (MapGoal[BLUE].first > 13)
+                {
+                    MapGoal[BLUE].first = 13;
+                }
+                else if (MapGoal[BLUE].first < 1)
+                {
+                    MapGoal[BLUE].first = 1;
+                }
+
+                if (MapGoal[BLUE].second > 18)
+                {
+                    MapGoal[BLUE].second = 18;
+                }
+                else if (MapGoal[BLUE].second < 1)
+                {
+                    MapGoal[BLUE].second = 1;
+                }
+
+                if (COSTMAP[MapGoal[BLUE].first][MapGoal[BLUE].second] == -1)
+                {
+                    for (DIRECTION dir : DIRECTIONS)
+                    {
+                        if (COSTMAP[MapGoal[BLUE].first + dir.dirRow][MapGoal[BLUE].second + dir.dirCol] == 0)
+                        {
+                            MapGoal[BLUE].first += dir.dirRow;
+                            MapGoal[BLUE].second += dir.dirCol;
+                            break;
+                        }
+                    }
+                }
+            }//戻り
 
             InitMap();
 
@@ -130,7 +165,7 @@ void Stage::Update()
         }
     }
 
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < ENEMY_MAX; i++)
     {
         if (minCost[i].size() != 0)
         {
@@ -345,7 +380,7 @@ void Stage::InitMap()
         }
     }
 
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < ENEMY_MAX; i++)
     {
         //スタートのコストを0にする
         CostMap[MapStart[i].first][MapStart[i].second].cost = 0;
@@ -386,7 +421,7 @@ void Stage::Dijkstra(cMap cel_, cMap goal,int ID)
 
 void Stage::Search(pair<int, int> node,int ID)
 {
-    {
+    
         if (node.first > 0)
         {
             if (node.first != MapStart[ID].first || node.second != MapStart[ID].second)
@@ -423,7 +458,7 @@ void Stage::Search(pair<int, int> node,int ID)
             }
         }
         //i += 2;//////敵1体
-    }
+    
 }
 
 

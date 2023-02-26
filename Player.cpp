@@ -21,12 +21,14 @@ void Player::Initialize()
     assert(pStage != nullptr);
 
     //モデルデータのロード
-    hModel_[0] = Model::Load("Enemy.fbx");
-    assert(hModel_ >= 0);
-    hModel_[1] = Model::Load("Pink.fbx");
-    assert(hModel_ >= 0);
-    hModel_[2] = Model::Load("Orange.fbx");
-    assert(hModel_ >= 0);
+    hModel_[RED] = Model::Load("Enemy.fbx");
+    assert(hModel_[RED] >= 0);
+    hModel_[PINK] = Model::Load("Pink.fbx");
+    assert(hModel_[PINK] >= 0);
+    hModel_[ORANGE] = Model::Load("Orange.fbx");
+    assert(hModel_[ORANGE] >= 0);
+    hModel_[BLUE] = Model::Load("Orange.fbx");
+    assert(hModel_[BLUE] >= 0);
 
     
     //nextX = pStage->GetListPos().second;
@@ -201,7 +203,7 @@ void Player::Update()
         //XMStoreFloat3(&transform_.position_, prevPosition);
         transform_.position_.z = (float)((int)(transform_.position_.z + 0.5f) - 0.3f);
     }
-
+    
     //下
     checkX = (int)transform_.position_.x;
     checkZ = (int)(transform_.position_.z - 0.3);
@@ -225,7 +227,7 @@ void Player::Update()
     }*/
 
     pStage->MapStart[playerID] = { transform_.position_.z ,transform_.position_.x };
-
+    pStage->SetEnemyPos(transform_.position_, playerID);
    // pos[playerID] = { transform_.position_.z ,transform_.position_.x };
 }
 

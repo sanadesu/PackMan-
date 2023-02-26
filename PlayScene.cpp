@@ -13,7 +13,7 @@ PlayScene::PlayScene(GameObject* parent)
 void PlayScene::Initialize()
 {
 	Instantiate<Stage>(this);
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < ENEMY_MAX; i++)
 	{
 		pPlayer[i] = (Player*)FindObject("Player");
 

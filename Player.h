@@ -2,16 +2,17 @@
 #include "Engine/GameObject.h"
 #include"Stage.h"
 #include "Engine/SphereCollider.h"
+
 //◆◆◆を管理するクラス
 class Player : public GameObject
 {
-    int hModel_[3];    //モデル番号
-    float nextX[3] = { 0,0,0 };
-    float nextY[3] = { 0,0,0 };
+    int hModel_[ENEMY_MAX];    //モデル番号
+    float nextX[ENEMY_MAX] = { 0,0,0,0 };
+    float nextY[ENEMY_MAX] = { 0,0,0,0 };
     
     bool start = false;
     Stage* pStage;
-    std::pair<int, int> pos[3] = {};
+    std::pair<int, int> pos[ENEMY_MAX] = {};
     
     bool first = false;
 public:

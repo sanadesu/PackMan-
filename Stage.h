@@ -3,6 +3,15 @@
 #include <iostream>
 #include<vector>
 
+enum Enemy
+{
+    RED = 0,
+    PINK,
+    ORANGE,
+    BLUE,
+    ENEMY_MAX
+};
+
 //◆◆◆を管理するクラス
 class Stage : public GameObject
 {
@@ -31,13 +40,14 @@ class Stage : public GameObject
     // スタート地点からの最小コスト値をいれてくやつ		初期化で全部9999
     int totalCosts[MAP_ROW][MAP_COL];
 
-    int hModel_[3];    //モデル番号
+    int hModel_[ENEMY_MAX];    //モデル番号
     int map_[20][15];
 
-    int startCellX[3] = {0,0,0};
-    int startCellY[3] = {0,0,0};
-    int goalCellX[3] = { 9,9,9 };//敵の位置
-    int goalCellY[3] = { 8,7,6 };//敵の位置
+    int startCellX[ENEMY_MAX] = {0,0,0,0};
+    int startCellY[ENEMY_MAX] = {0,0,0,0};
+    int goalCellX[ENEMY_MAX] = { 9,9,9,10};//敵の位置x
+    int goalCellY[ENEMY_MAX] = { 8,7,6,7 };//敵の位置y
+    XMFLOAT3 enemyPos[ENEMY_MAX];
 
     /*int goalCellX[3] = { 1,9,18 };
     int goalCellY[3] = { 1,7,13 };*/
@@ -46,25 +56,18 @@ class Stage : public GameObject
     bool flag = false;
 
     std::list<std::pair<int, int>> move;
-    std::pair<int, int> nextMove[3];
+    std::pair<int, int> nextMove[ENEMY_MAX];
 
-    std::pair<int, int> min[3];
+    std::pair<int, int> min[ENEMY_MAX];
 
-    std::list<std::pair<int, int>> minCost[3];
-    std::list<std::pair<int, int>> nowCost[3];
+    std::list<std::pair<int, int>> minCost[ENEMY_MAX];
+    std::list<std::pair<int, int>> nowCost[ENEMY_MAX];
     std::vector<std::vector<std::pair<int, int>>> data;
 
-    enum
-    {
-        RED = 0,
-        PINK,
-        CYAN,
-        ORANGE,
-        MAX
-    };
+    
 public:
-    std::pair<int, int> MapStart[3];
-    std::pair<int, int> MapGoal[3];
+    std::pair<int, int> MapStart[ENEMY_MAX];
+    std::pair<int, int> MapGoal[ENEMY_MAX];
 
     typedef struct tagCell {
         int row;
@@ -88,7 +91,7 @@ public:
     }CostMap[MAP_ROW][MAP_COL];
 
 
-    CELL startCell[3] = { startCellY[RED],startCellX[RED], startCellY[PINK],startCellX[PINK], startCellY[ORANGE],startCellX[ORANGE] };		// スタート地点 [Y,X]??????
+    CELL startCell[ENEMY_MAX] = { startCellY[RED],startCellX[RED], startCellY[PINK],startCellX[PINK], startCellY[ORANGE],startCellX[ORANGE], startCellY[BLUE],startCellX[BLUE]};		// スタート地点 [Y,X]??????
     CELL goalCell;
 
     //コンストラクタ
@@ -139,4 +142,7 @@ public:
     void Dijkstra(cMap cel_, cMap goal,int ID);
 
     std::pair<int, int> GetNextMovePos(int ID);
+
+    void SetEnemyPos(XMFLOAT3 pos, int enemyID) { enemyPos[enemyID] = pos; }
+
 };
