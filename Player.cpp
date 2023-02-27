@@ -27,7 +27,7 @@ void Player::Initialize()
     assert(hModel_[PINK] >= 0);
     hModel_[ORANGE] = Model::Load("Orange.fbx");
     assert(hModel_[ORANGE] >= 0);
-    hModel_[BLUE] = Model::Load("Orange.fbx");
+    hModel_[BLUE] = Model::Load("Blue.fbx");
     assert(hModel_[BLUE] >= 0);
 
     
